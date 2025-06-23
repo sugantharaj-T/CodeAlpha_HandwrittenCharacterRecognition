@@ -37,3 +37,28 @@ model.fit(x_train, y_train, epochs=5, batch_size=128, validation_split=0.1)
 # Step 6: Evaluate the model
 test_loss, test_acc = model.evaluate(x_test, y_test)
 print(f"Test Accuracy: {test_acc:.4f}")
+
+
+#----------------------------------------
+#input: upload a file
+from google.colab import files
+from PIL import Image
+import cv2
+
+uploaded = files.upload()
+
+for fn in uploaded.keys():
+    img = Image.open(fn).convert('L')
+    img = img.resize((28, 28))
+    img = np.invert(img)
+    img_array = np.array(img).astype('float32') / 255.0
+    img_array = img_array.reshape(1, 28, 28, 1)
+
+    #prediction
+    
+    prediction = model.predict(img_array)
+    predicted_digit = np.argmax(prediction)
+    print(f"Predicted Digit: {predicted_digit}")
+
+
+
